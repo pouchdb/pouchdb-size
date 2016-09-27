@@ -18,7 +18,7 @@
     "locket": "1.0.0",
     "medeadown": "^1.1.1",
     "memdown": "^1.0.0",
-    "mocha": "^2.0.1",
+    "mocha": "^3.1.0",
     "pouchdb": "^5.2.1",
     "sqldown": "^2.1.0",
     "sqlite3": "^3.0.4"

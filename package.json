@@ -21,7 +21,7 @@
     "mocha": "^2.0.1",
     "pouchdb": "^5.2.1",
     "sqldown": "^2.1.0",
-    "sqlite3": "^3.0.4"
+    "sqlite3": "^3.1.8"
   },
   "scripts": {
     "test": "npm run coverage && npm run jshint",

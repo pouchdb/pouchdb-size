@@ -145,4 +145,22 @@ describe('pouchdb-size tests', function () {
       done();
     });
   });
+
+  it("should fail when adapter fails", function (done) {
+    var faildown = function () {
+      return {
+        open: function (opts, callback) {
+          callback("eww");
+        }
+      };
+    };
+    var db = new PouchDB("i", {db: faildown});
+
+    db.getDiskSize(function (err, size) {
+      err.should.exist;
+      err.message.should.equal("eww");
+      should.not.exist(size);
+      done();
+    });
+  });
 });

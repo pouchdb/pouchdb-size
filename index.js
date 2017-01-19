@@ -50,16 +50,23 @@ exports.getDiskSize = function (callback) {
 
   if (db.type() === 'leveldb') {
     var prefix = db.__opts.prefix || '';
-    var path = prefix + db._db_name;
+    var path = prefix + db.name;
 
     // wait until the database is ready. Necessary for at least sqldown,
     // which doesn't write anything to disk sooner.
-    var then = db.then || function (cb) {
-      return cb();
-    };
-    promise = then.call(db, function () {
-      return getSize(path);
-    });
+    if (!db.taskqueue.isReady) {
+      promise = new Promise(function (resolve, reject) {
+        db.taskqueue.addTask(function (failed) {
+          if (failed) {
+            reject(failed);
+          } else {
+            getSize(path).then(resolve, reject);
+          }
+        });
+      });
+    } else {
+      promise = getSize(path);
+    }
   } else {
     var msg = "Can't get the database size for database type '" + db.type() + "'!";
     promise = Promise.reject(new Error(msg));
